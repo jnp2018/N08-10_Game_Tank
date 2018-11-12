@@ -141,9 +141,24 @@ function bullet_interval(s_id, drt){
 	if(drt == 4){
 		bullet[s_id][0] -= 10;
 	}
+	
+	var x = Math.floor(bullet[s_id][0]/60);
+	var y = Math.floor(bullet[s_id][1]/60);
+	
+	if(x >= 0 && x <= 9 && y >= 0 && y <= 9){
+		if(map[y][x] == 1){
+			console.log(x, y);
+			delete bullet[s_id];
+			clearInterval(shot_arr[s_id]);
+			reload();
+			return;
+		}
+	}
+	
 	if(bullet[s_id][0] > 600 || bullet[s_id][0] < -60 || bullet[s_id][1] > 600 || bullet[s_id][1] < -60){
 		clearInterval(shot_arr[s_id]);
 	}
+	
 	reload();
 }
 

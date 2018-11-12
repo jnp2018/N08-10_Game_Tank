@@ -66,21 +66,29 @@ public class BulletHandler extends Thread {
                     
                     Data.rooms.get(Data.UserID_RoomID.get(Data.games.get(gameID).user1)).start();
                             
-                    Data.games.get(gameID).bullets.remove(i);
-                    i--;
-                }
-                
-                
-                if(Data.games.get(gameID).map[Data.games.get(gameID).bullets.get(i).x/60][Data.games.get(gameID).bullets.get(i).y/60] == 1){
 //                    Data.games.get(gameID).bullets.remove(i);
 //                    i--;
-                    System.out.println("cay");
-
                 }
+                if(i < Data.games.get(gameID).bullets.size()){
                 
-                if(Data.games.get(gameID).bullets.get(i).x > 600 || Data.games.get(gameID).bullets.get(i).x < -60 || Data.games.get(gameID).bullets.get(i).y > 600 || Data.games.get(gameID).bullets.get(i).y < -60){
-                    Data.games.get(gameID).bullets.remove(i);
-                    i--;
+                    if(Data.games.get(gameID).bullets.get(i).x/60 >= 0 && Data.games.get(gameID).bullets.get(i).x/60<=9 && Data.games.get(gameID).bullets.get(i).y/60 >= 0 && Data.games.get(gameID).bullets.get(i).y/60<=9){
+
+                        System.out.println(Data.games.get(gameID).bullets.get(i).x/60 + " "+ Data.games.get(gameID).bullets.get(i).y/60);
+
+                        if(Data.games.get(gameID).map[Data.games.get(gameID).bullets.get(i).y/60][Data.games.get(gameID).bullets.get(i).x/60] == 1){
+                            Data.games.get(gameID).bullets.remove(i);
+                            //i--;
+                        }
+                    }
+                }
+
+                if(i < Data.games.get(gameID).bullets.size()){
+                
+                    if(Data.games.get(gameID).bullets.get(i).x > 600 || Data.games.get(gameID).bullets.get(i).x < -60 || Data.games.get(gameID).bullets.get(i).y > 600 || Data.games.get(gameID).bullets.get(i).y < -60){
+                        Data.games.get(gameID).bullets.remove(i);
+                        i--;
+                    }
+                
                 }
                 
             }
