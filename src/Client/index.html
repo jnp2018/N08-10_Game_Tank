@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Tank</title>
+
+<style>
+.title {
+	text-align: center;
+	border-bottom: 1px solid #CCC;
+	padding: 10px 0px;
+}
+.title b {
+	font-size: 20px;
+	display: block;
+}
+.title button {
+	padding: 5px;
+}
+.room {
+	padding: 10px;
+	border-bottom: 1px solid #CCC;
+}
+.room button {
+	padding: 5px;
+}
+.inroom_button {
+	padding: 10px 0px;
+}
+.inroom_button button {
+	padding: 10px;
+	margin-right: 5px;
+}
+</style>
+
+</head>
+<body>
+	<script src="jquery-3.3.1.min.js"></script>
+	<script src="websocket.js"></script>
+	<script src="sweetalert.min.js"></script>
+	
+	<div id="form_login" style="margin:auto;display:block;margin-top:300px;width: 400px;max-width:100%;">
+		<input type="text" name="txt_name" id="txt_name" value="" placeholder="Nhập tên" style="width:100%;font-size: 25px;" />
+		<div style="width:100%;font-size: 25px;padding:5px 0px;">
+			Chọn màu xe tăng: <select name="tank_color" id="tank_color" style="font-size: 20px;">
+				<option value="1">Xanh</option>
+				<option value="2">Đỏ</option>
+				<option value="3">Đen</option>
+			</select>
+		</div>
+		<div style="width:100%;font-size: 25px;padding:5px 0px;">
+			Chọn màu đạn: <select name="bullet_color" id="bullet_color" style="font-size: 20px;">
+				<option value="1">Xanh</option>
+				<option value="2">Đỏ</option>
+				<option value="3">Đen</option>
+			</select>
+		</div>
+		<input type="submit" id="btn_submit" onclick="submit()" value="Vào" style="width:100%;font-size: 25px;margin-top:5px;" />
+	</div>
+	
+	<div id="select_room" style="max-width: 600px; margin: 0px auto;border:1px solid #CCC;display:none;">
+		<div class="title"><b>Danh sách phòng</b><br/> <button onclick="room_crate()">Tạo phòng</button></div>
+		
+		<div id="list_room">		
+		</div>
+	</div>
+	
+	<div id="d_cv" style="width: 600px; margin: 0px auto;display:none;">
+		<div class="title"><b>Phòng</b></div>
+		<div class="user"></div>
+		<div class="inroom_button"><button onclick="leave_room()">Rời phòng</button></div>
+	
+		<canvas id="myCanvas" width="600" height="600" style="border:1px solid #000000;"></canvas>
+	</div>
+	
+	<script src="script.js"></script>
+	
+	<script>	
+	function submit(){
+	
+		if(document.getElementById('txt_name').value != ""){
+	
+		if(send_msg({type: "login", name: document.getElementById('txt_name').value, tank_color: document.getElementById('tank_color').value, bullet_color: document.getElementById('bullet_color').value})){
+			document.getElementById('txt_name').disabled = true;
+			document.getElementById('btn_submit').disabled = true;
+			$('#form_login').hide();
+			$('#select_room').show();
+		} else {
+			console.log("khong ket noi duoc ws");
+		}
+		
+		}
+	}
+	
+	function room_crate(){
+		swal({
+		  text: 'Nhập tên phòng',
+		  content: "input",
+		  button: {
+			text: "Tạo",
+			closeModal: false,
+		  },
+		}).then(room_name => {
+		
+			if(room_name != "" && room_name != null){
+				send_msg({type: "room_crate", room_name: room_name});
+				$('#d_cv .title b').html(room_name);
+				$('#select_room').hide();
+				$('#d_cv').show();
+			}
+		
+			swal.close();
+			return true;
+		});
+	}
+	
+	function leave_room(){
+		send_msg({type: "leave_room"});
+		$('#d_cv').hide();
+		$('#select_room').show();
+		$('#d_cv .user').html("");
+	}
+	
+	function join_room(roomID){
+		var bullet = [];
+		var tanks = [];
+		var shot_arr = [];
+		send_msg({type: "join_room", roomID: roomID});
+	}
+	
+	</script>
+	
+</body>
+</html> 
