@@ -1,4 +1,4 @@
-# N08-10_Game_Tank
+# N08_10_GameTank
 
 Lib:
 - json-simple-1.1.jar
